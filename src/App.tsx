@@ -43,7 +43,7 @@ function App() {
   };
 
   return (
-    <>
+    <div style={{ padding: ".5rem" }}>
       <Header />
       <Todo
         edit={editTodo}
@@ -59,7 +59,7 @@ function App() {
         edit={setEditTodo}
         setTodo={setTodo}
       />
-    </>
+    </div>
   );
 }
 
