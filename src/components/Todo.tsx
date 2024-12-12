@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { Container,  } from "../styles/todoStyle";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -25,11 +24,11 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
     inputRef.current?.focus();
   };
   return (
-    <Container>
+    <div className="flex gap-3 w-[380px] sm:w-[400px] md:w-[540px]">
       <Input
         ref={inputRef}
         type="text"
-        placeholder="todo..."
+        placeholder="task"
         value={todo}
         onKeyDown={(e) => {
           if (e.key === "Enter") addTodoHandle();
@@ -39,7 +38,7 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
         }}
       />
       <Button variant={'outline'} onClick={addTodoHandle}>add</Button>
-    </Container>
+    </div>
   );
 };
 export default Todo;

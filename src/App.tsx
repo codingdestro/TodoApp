@@ -1,5 +1,4 @@
 import Todo from "./components/Todo";
-import Header from "./components/Header";
 import TodoList from "./components/TodoList";
 import todoType from "./app.ts";
 import { useState } from "react";
@@ -11,8 +10,8 @@ function App() {
   });
   const [todoList, setTodoList] = useState<todoType[]>([
     {
-      todo: "hello world",
-      done: true,
+      todo: "Test Todo",
+      done: false,
     },
   ]);
   const addTodo = (todo: string) => {
@@ -43,22 +42,26 @@ function App() {
   };
 
   return (
-    <div className="px-5">
-      <Header />
-      <Todo
-        edit={editTodo}
-        editTodo={edit}
-        addTodo={addTodo}
-        todo={todo}
-        setTodo={setTodo}
-      />
-      <TodoList
-        todos={todoList}
-        markComplete={markComplete}
-        deleteTodo={deleteTodo}
-        edit={setEditTodo}
-        setTodo={setTodo}
-      />
+    <div className="p-5 flex gap-5 flex-col items-center">
+      <div className="border-b border-black px-5">
+        Todo Bucket
+      </div>
+      <div className="flex flex-col gap-3 w-[380px] sm:w-[400px] md:w-[540px]">
+        <Todo
+          edit={editTodo}
+          editTodo={edit}
+          addTodo={addTodo}
+          todo={todo}
+          setTodo={setTodo}
+        />
+        <TodoList
+          todos={todoList}
+          markComplete={markComplete}
+          deleteTodo={deleteTodo}
+          edit={setEditTodo}
+          setTodo={setTodo}
+        />
+      </div>
     </div>
   );
 }
