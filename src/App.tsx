@@ -43,7 +43,7 @@ function App() {
   };
 
   return (
-    <div style={{ padding: ".5rem" }}>
+    <div className="px-5">
       <Header />
       <Todo
         edit={editTodo}

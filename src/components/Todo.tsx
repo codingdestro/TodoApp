@@ -1,5 +1,7 @@
 import { useRef } from "react";
-import { Container, Input, AddButton } from "../styles/todoStyle";
+import { Container,  } from "../styles/todoStyle";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 interface Props {
   addTodo: (todo: string) => void;
@@ -36,7 +38,7 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
           setTodo(e.target.value);
         }}
       />
-      <AddButton onClick={addTodoHandle}>add</AddButton>
+      <Button variant={'outline'} onClick={addTodoHandle}>add</Button>
     </Container>
   );
 };
