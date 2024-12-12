@@ -24,7 +24,7 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
     inputRef.current?.focus();
   };
   return (
-    <div className="flex gap-3 w-[380px] sm:w-[400px] md:w-[540px]">
+    <div className="flex gap-3 w-full">
       <Input
         ref={inputRef}
         type="text"

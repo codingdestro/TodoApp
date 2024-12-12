@@ -46,7 +46,7 @@ function App() {
       <div className="border-b border-black px-5">
         Todo Bucket
       </div>
-      <div className="flex flex-col gap-3 w-[380px] sm:w-[400px] md:w-[540px]">
+      <div className="flex flex-col gap-3 w-full max-w-[600px]">
         <Todo
           edit={editTodo}
           editTodo={edit}
