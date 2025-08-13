@@ -2,16 +2,14 @@ import Todo from "./components/Todo";
 import TodoList from "./components/TodoList";
 import { useState } from "react";
 import { ITodo } from "./lib/types.ts";
-import { initTodo } from "./lib/utils.ts";
 function App() {
-  const [todo, setTodo] = useState("");
   const [editTodo, setEditTodo] = useState({
     edit: false,
     idx: 0,
   });
   const [todoList, setTodoList] = useState<ITodo[]>([]);
-  const addTodo = (todo: string) => {
-    setTodoList((prev) => [...prev, initTodo(todo)]);
+  const addTodo = (todo: ITodo) => {
+    setTodoList((prev) => [...prev, todo]);
   };
 
   const markComplete = (idx: number) => {
@@ -47,15 +45,12 @@ function App() {
             edit={editTodo}
             editTodo={edit}
             addTodo={addTodo}
-            todo={todo}
-            setTodo={setTodo}
           />
           <TodoList
             todos={todoList}
             markComplete={markComplete}
             deleteTodo={deleteTodo}
             edit={setEditTodo}
-            setTodo={setTodo}
           />
         </div>
       </div>

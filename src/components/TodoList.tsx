@@ -10,16 +10,9 @@ interface Props {
   markComplete: (idx: number) => void;
   deleteTodo: (idx: number) => void;
   edit: Dispatch<SetStateAction<{ edit: boolean; idx: number }>>;
-  setTodo: Dispatch<SetStateAction<string>>;
 }
 
-const TodoList = ({
-  todos,
-  markComplete,
-  setTodo,
-  deleteTodo,
-  edit,
-}: Props) => {
+const TodoList = ({ todos, markComplete, deleteTodo, edit }: Props) => {
   const completedCount = todos.filter((todo) => todo.isCompleted).length;
   const totalCount = todos.length;
 
@@ -103,7 +96,6 @@ const TodoList = ({
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-blue-100 hover:text-blue-600"
                     onClick={() => {
-                      setTodo(todo.task);
                       edit({ edit: true, idx: idx });
                     }}
                     title="Edit task"

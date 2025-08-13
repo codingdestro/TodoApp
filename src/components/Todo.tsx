@@ -1,28 +1,30 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Plus, Edit2 } from "lucide-react";
 import SelectColor from "./SelectColor";
+import { Colors, ITodo } from "@/lib/types";
+import { initTodo } from "@/lib/utils";
 
 interface Props {
-  addTodo: (todo: string) => void;
+  addTodo: (todo: ITodo) => void;
   edit: { edit: boolean; idx: number };
-  todo: string;
-  setTodo: (todo: string) => void;
   editTodo: () => void;
 }
 
-const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
+const Todo = ({ addTodo, edit, editTodo }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [task, setTask] = useState<string>("");
+  const [color, setColor] = useState<Colors>("gray");
 
   const addTodoHandle = () => {
-    if (!todo.trim()) return;
     if (edit.edit) {
       editTodo();
     } else {
-      addTodo(todo.trim());
+      const newTodo = initTodo(task);
+      addTodo({ ...newTodo, color });
     }
-    setTodo("");
+    setTask("");
     inputRef.current?.focus();
   };
 
@@ -50,7 +52,7 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
               placeholder={
                 edit.edit ? "Update your task..." : "What needs to be done?"
               }
-              value={todo}
+              value={task}
               className="h-11 text-base transition-all duration-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -59,16 +61,16 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
                 }
               }}
               onChange={(e) => {
-                setTodo(e.target.value);
+                setTask(e.target.value);
               }}
             />
           </div>
 
-          <SelectColor />
+          <SelectColor currentColor={color} setColor={setColor} />
 
           <Button
             onClick={addTodoHandle}
-            disabled={!todo.trim()}
+            disabled={!task.trim()}
             className="h-11 px-6 font-medium transition-all duration-200 hover:scale-105 active:scale-95 sm:min-w-[120px]"
             size="default"
           >

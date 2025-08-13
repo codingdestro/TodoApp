@@ -2,8 +2,12 @@ import { Colors } from "@/lib/types";
 import { getColor } from "@/lib/utils";
 import { useState } from "react";
 
-const SelectColor = () => {
-  const [currentColor, setColor] = useState<Colors>("gray");
+interface Props{
+  currentColor: Colors;
+  setColor: (color: Colors) => void;
+}
+
+const SelectColor = ({ currentColor, setColor }: Props) => {
   const [showModal, setShowModal] = useState(false);
   function changeColor(color: Colors) {
     setColor(color);
