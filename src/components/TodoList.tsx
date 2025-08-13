@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
+import { Edit2, Trash2, CheckCircle2, Circle } from "lucide-react";
 
 type todoType = { todo: string; done: boolean };
 
@@ -10,6 +12,7 @@ interface Props {
   edit: Dispatch<SetStateAction<{ edit: boolean; idx: number }>>;
   setTodo: Dispatch<SetStateAction<string>>;
 }
+
 const TodoList = ({
   todos,
   markComplete,
@@ -17,40 +20,124 @@ const TodoList = ({
   deleteTodo,
   edit,
 }: Props) => {
+  const completedCount = todos.filter((todo) => todo.done).length;
+  const totalCount = todos.length;
+
   return (
-    <div className="p-2 border rounded-lg flex flex-col gap-3">
-      {todos.length > 0
-        ? todos.map((__, idx: number) => {
-            return (
-              <div key={idx} 
-              className={`flex justify-between transition duration-500 ${todos[idx].done ? "text-zinc-300" : ""}`}>
-                <div className="flex gap-2 items-center w-full" >
-                  <Checkbox id={`${idx}`} checked={todos[idx].done}  onClick={() => markComplete(idx)}/>
-                  <label htmlFor={`${idx}`} className="text-sm w-full">{todos[idx].todo}</label>
+    <div className="w-full">
+      {/* Header with stats */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-foreground">Your Tasks</h3>
+        {totalCount > 0 && (
+          <div className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
+            {completedCount} of {totalCount} completed
+          </div>
+        )}
+      </div>
+
+      {/* Progress Bar */}
+      {totalCount > 0 && (
+        <div className="my-4">
+          <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
+            <span>Progress</span>
+            <span>{Math.round((completedCount / totalCount) * 100)}%</span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <div
+              className="bg-primary rounded-full h-2 transition-all duration-300 ease-out"
+              style={{ width: `${(completedCount / totalCount) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Todo List */}
+      <div className="bg-card border border-border rounded-lg shadow-sm">
+        {todos.length > 0 ? (
+          <div className="divide-y divide-border">
+            {todos.map((todo, idx) => (
+              <div
+                key={idx}
+                className={`p-4 flex items-center gap-3 group hover:bg-muted/50 transition-all duration-200 ${
+                  todo.done ? "opacity-60" : ""
+                }`}
+              >
+                {/* Checkbox */}
+                <div className="flex-shrink-0">
+                  <Checkbox
+                    id={`todo-${idx}`}
+                    checked={todo.done}
+                    onClick={() => markComplete(idx)}
+                    className="w-5 h-5"
+                  />
                 </div>
-                <div className="flex gap-2 items-center pl-2 ">
-                  <div
-                    style={{ backgroundImage: "url('/assets/edit.svg')" }}
-                    className="edit w-[18px] h-[18px] bg-cover cursor-pointer"
+
+                {/* Todo Text */}
+                <div className="flex-1 min-w-0">
+                  <label
+                    htmlFor={`todo-${idx}`}
+                    className={`text-sm sm:text-base cursor-pointer block truncate pr-2 ${
+                      todo.done
+                        ? "line-through text-muted-foreground"
+                        : "text-foreground"
+                    }`}
+                    title={todo.todo}
+                  >
+                    {todo.todo}
+                  </label>
+                </div>
+
+                {/* Status Indicator */}
+                <div className="flex-shrink-0 hidden sm:block">
+                  {todo.done ? (
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Circle className="w-4 h-4 text-muted-foreground" />
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-blue-100 hover:text-blue-600"
                     onClick={() => {
-                      setTodo(todos[idx].todo);
+                      setTodo(todo.todo);
                       edit({ edit: true, idx: idx });
                     }}
-                  />
-                  <div
-                    className="edit w-[18px] h-[18px] bg-cover cursor-pointer"
-                    style={{ backgroundImage: "url('/assets/del.svg')" }}
-                    onClick={() => {
-                      deleteTodo(idx);
-                    }}
-                  />
+                    title="Edit task"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                    onClick={() => deleteTodo(idx)}
+                    title="Delete task"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-            );
-          })
-        : <div className="text-center text-rose-500">
-          No todos
-          </div>}
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <h4 className="text-lg font-medium text-foreground mb-2">
+              No tasks yet
+            </h4>
+            <p className="text-muted-foreground">
+              Add your first task above to get started with your todo list!
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
