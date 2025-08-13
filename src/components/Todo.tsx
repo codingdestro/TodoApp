@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Plus, Edit2 } from "lucide-react";
+import SelectColor from "./SelectColor";
 
 interface Props {
   addTodo: (todo: string) => void;
@@ -62,6 +63,8 @@ const Todo = ({ addTodo, edit, editTodo, todo, setTodo }: Props) => {
               }}
             />
           </div>
+
+          <SelectColor />
 
           <Button
             onClick={addTodoHandle}
