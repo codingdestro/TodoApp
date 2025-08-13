@@ -1,45 +1,32 @@
 import Todo from "./components/Todo";
 import TodoList from "./components/TodoList";
-import todoType from "./app.ts";
 import { useState } from "react";
+import { ITodo } from "./lib/types.ts";
+import { initTodo } from "./lib/utils.ts";
 function App() {
   const [todo, setTodo] = useState("");
   const [editTodo, setEditTodo] = useState({
     edit: false,
     idx: 0,
   });
-  const [todoList, setTodoList] = useState<todoType[]>([
-    {
-      todo: "Test Todo",
-      done: false,
-    },
-  ]);
+  const [todoList, setTodoList] = useState<ITodo[]>([]);
   const addTodo = (todo: string) => {
-    setTodoList((prev: todoType[]) => [...prev, { todo: todo, done: false }]);
+    setTodoList((prev) => [...prev, initTodo(todo)]);
   };
 
   const markComplete = (idx: number) => {
-    setTodoList(() =>
-      todoList.map((item: todoType, index: number) => {
-        return index === idx ? { done: !item.done, todo: item.todo } : item;
-      })
+    setTodoList((prev) =>
+      prev.map((todo, index) =>
+        index === idx ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      )
     );
   };
 
   const deleteTodo = (index: number) => {
-    setTodoList(() =>
-      todoList.filter((_: todoType, idx: number) => idx !== index)
-    );
+    setTodoList((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const edit = () => {
-    setTodoList(() =>
-      todoList.map((item: todoType, index: number) => {
-        return index === editTodo.idx ? { done: item.done, todo: todo } : item;
-      })
-    );
-    setEditTodo({ edit: false, idx: 0 });
-  };
+  const edit = () => {};
 
   return (
     <div className="min-h-screen bg-background">

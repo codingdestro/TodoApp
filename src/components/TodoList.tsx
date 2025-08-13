@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import { Edit2, Trash2, CheckCircle2, Circle } from "lucide-react";
-
-type todoType = { todo: string; done: boolean };
+import { ITodo } from "@/lib/types";
+import { getColor } from "@/lib/utils";
 
 interface Props {
-  todos: todoType[];
+  todos: ITodo[];
   markComplete: (idx: number) => void;
   deleteTodo: (idx: number) => void;
   edit: Dispatch<SetStateAction<{ edit: boolean; idx: number }>>;
@@ -20,7 +20,7 @@ const TodoList = ({
   deleteTodo,
   edit,
 }: Props) => {
-  const completedCount = todos.filter((todo) => todo.done).length;
+  const completedCount = todos.filter((todo) => todo.isCompleted).length;
   const totalCount = todos.length;
 
   return (
@@ -54,19 +54,19 @@ const TodoList = ({
       {/* Todo List */}
       <div className="bg-card border border-border rounded-lg shadow-sm">
         {todos.length > 0 ? (
-          <div className="divide-y divide-border">
+          <div className={`divide-y divide-border`}>
             {todos.map((todo, idx) => (
               <div
                 key={idx}
-                className={`p-4 flex items-center gap-3 group hover:bg-muted/50 transition-all duration-200 ${
-                  todo.done ? "opacity-60" : ""
-                }`}
+                className={`p-4 flex items-center gap-3 group transition-all duration-200 ${
+                  todo.isCompleted ? "opacity-60" : ""
+                } ${getColor(todo.color)}`}
               >
                 {/* Checkbox */}
                 <div className="flex-shrink-0">
                   <Checkbox
                     id={`todo-${idx}`}
-                    checked={todo.done}
+                    checked={todo.isCompleted}
                     onClick={() => markComplete(idx)}
                     className="w-5 h-5"
                   />
@@ -77,19 +77,19 @@ const TodoList = ({
                   <label
                     htmlFor={`todo-${idx}`}
                     className={`text-sm sm:text-base cursor-pointer block truncate pr-2 ${
-                      todo.done
+                      todo.isCompleted
                         ? "line-through text-muted-foreground"
-                        : "text-foreground"
+                        : ""
                     }`}
-                    title={todo.todo}
+                    title={todo.task}
                   >
-                    {todo.todo}
+                    {todo.task}
                   </label>
                 </div>
 
                 {/* Status Indicator */}
                 <div className="flex-shrink-0 hidden sm:block">
-                  {todo.done ? (
+                  {todo.isCompleted ? (
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
                   ) : (
                     <Circle className="w-4 h-4 text-muted-foreground" />
@@ -103,7 +103,7 @@ const TodoList = ({
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-blue-100 hover:text-blue-600"
                     onClick={() => {
-                      setTodo(todo.todo);
+                      setTodo(todo.task);
                       edit({ edit: true, idx: idx });
                     }}
                     title="Edit task"

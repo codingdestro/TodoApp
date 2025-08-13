@@ -24,7 +24,7 @@ export function initTodo(task: string): ITodo {
     isCompleted: false,
     tags: [],
     due_to: new Date(),
-    color: "red",
+    color: "gray",
     createdAt: new Date(),
     editedAt: new Date(),
   };
@@ -47,4 +47,29 @@ export function setColor(
   return todolist.map((todo) =>
     todo.id === todoId ? { ...todo, color } : todo
   );
+}
+
+export function getColor(color: Colors): String {
+  switch (color) {
+    case "red":
+      return "bg-red-200 text-red-500";
+    case "blue":
+      return "bg-blue-200 text-blue-500";
+    case "green":
+      return "bg-green-200 text-green-500";
+    case "yellow":
+      return "bg-yellow-200 text-yellow-600";
+    case "orange":
+      return "bg-orange-200 text-orange-600";
+    case "purple":
+      return "bg-purple-200 text-purple-500";
+    case "brown":
+      return "bg-amber-700 text-amber-200";
+    case "gray":
+      return "bg-gray-200 text-gray-600";
+    case "pink":
+      return "bg-pink-200 text-pink-500";
+    default:
+      return "bg-gray-200 text-white";
+  }
 }

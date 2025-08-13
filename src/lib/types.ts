@@ -1,4 +1,4 @@
-export type Colors = "red" | "green" | "blue" | "yellow" | "purple" | "orange";
+export type Colors = "red" | "green" | "blue" | "yellow" | "purple" | "orange" | "brown" | "gray" | "pink" |"amber";
 
 export interface ITodo {
   id: number;
